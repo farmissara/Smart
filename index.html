@@ -1,84 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌱 Smart Farm Hub Universal</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wghtÉ300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Socket.io -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-    
+
     <style>
-        * ä
-            font-family: 'Kanit', sans-serif;
-        å
-        
-        body ä
-            background: #f8fafc;
-        å
-        
-        .tab-button ä
-            transition: all 0.3s;
-        å
-        
-        .tab-button.active ä
-            background: #10b981;
-            color: white;
-        å
-        
-        .card ä
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-        å
-        
-        .card:hover ä
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        å
-        
-        .notification-badge ä
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        å
-        
-        .status-dot ä
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        å
-        
-        .online ä background-color: #10b981; å
-        .offline ä background-color: #ef4444; å
-        
-        .chip-esp8266 ä background-color: #3b82f6; color: white; å
-        .chip-esp32 ä background-color: #8b5cf6; color: white; å
-        .chip-unknown ä background-color: #6b7280; color: white; å
-        
-        .btn-pump-on ä background-color: #10b981 !important; color: white !important; å
-        .btn-pump-off ä background-color: #ef4444 !important; color: white !important; å
-        .btn-led-on ä background-color: #f59e0b !important; color: white !important; å
-        .btn-led-off ä background-color: #6b7280 !important; color: white !important; å
+        * { font-family: 'Kanit', sans-serif; }
+        body { background: #f8fafc; }
+        .tab-button { transition: all 0.3s; }
+        .tab-button.active { background: #10b981; color: white; }
+        .card { background: white; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .card:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .notification-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .online { background-color: #10b981; }
+        .offline { background-color: #ef4444; }
+        .chip-esp8266 { background-color: #3b82f6; color: white; }
+        .chip-esp32 { background-color: #8b5cf6; color: white; }
+        .chip-unknown { background-color: #6b7280; color: white; }
+        .btn-pump-on { background-color: #10b981 !important; color: white !important; }
+        .btn-pump-off { background-color: #ef4444 !important; color: white !important; }
+        .btn-led-on { background-color: #f59e0b !important; color: white !important; }
+        .btn-led-off { background-color: #6b7280 !important; color: white !important; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -93,14 +47,14 @@
                         <p class="text-sm opacity-90">รองรับ ESP8266 และ ESP32</p>
                     </div>
                 </div>
-                
+
                 <div class="flex items-center space-x-4">
                     <!-- Connection Status -->
                     <div id="connection-status" class="flex items-center px-3 py-1.5 rounded-full bg-white bg-opacity-20">
                         <span class="status-dot online" id="status-dot"></span>
                         <span class="text-sm font-medium" id="status-text">เชื่อมต่อ Hub แล้ว</span>
                     </div>
-                    
+
                     <!-- Notification Bell -->
                     <div class="relative">
                         <button id="notification-btn" class="w-10 h-10 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition-all flex items-center justify-center">
@@ -110,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Tabs Navigation -->
             <div class="mt-4 flex space-x-2 overflow-x-auto">
                 <button class="tab-button active px-4 py-2 rounded-lg font-medium" data-tab="dashboard">
@@ -131,7 +85,7 @@
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
-            
+
             <!-- System Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="card p-6">
@@ -145,7 +99,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card p-6">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
@@ -157,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card p-6">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
@@ -170,7 +124,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Node Types Stats -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div class="card p-6">
@@ -188,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card p-6">
                     <h3 class="text-lg font-bold text-gray-700 mb-4">ข้อมูลระบบ</h3>
                     <div class="space-y-3">
@@ -216,7 +170,7 @@
         <!-- Control Tab -->
         <div id="control" class="tab-content hidden">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">ควบคุมอุปกรณ์</h2>
-            
+
             <div class="mb-6">
                 <div class="flex items-center mb-4">
                     <select id="node-select" class="border rounded-lg px-4 py-2 flex-1 mr-4">
@@ -227,32 +181,9 @@
                     </button>
                 </div>
             </div>
-            
+
             <div id="control-panel" class="card p-6">
                 <p class="text-gray-600 text-center py-8">เลือกโหนดเพื่อควบคุมอุปกรณ์</p>
-            </div>
-            
-            <!-- Node Type Setting Modal -->
-            <div id="node-type-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
-                <div class="bg-white rounded-lg p-6 w-full max-w-md">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">ตั้งค่าประเภทโหนด</h3>
-                    <div class="mb-4">
-                        <p class="text-gray-600 mb-2">เลือกประเภทสำหรับโหนด: <span id="modal-node-id" class="font-bold"></span></p>
-                        <select id="node-type-select" class="w-full border rounded-lg px-4 py-2">
-                            <option value="esp8266">ESP8266 (NodeMCU, Wemos D1 Mini)</option>
-                            <option value="esp32">ESP32 (ESP32 DevKit, ESP32-CAM)</option>
-                        </select>
-                        <p class="text-sm text-gray-500 mt-2">การตั้งค่าจะช่วยให้ระบบควบคุมอุปกรณ์ได้ถูกต้อง</p>
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button onclick="closeNodeTypeModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                            ยกเลิก
-                        </button>
-                        <button onclick="saveNodeType()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
-                            บันทึก
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -266,9 +197,8 @@
                     </button>
                 </div>
             </div>
-            
+
             <div id="nodes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Node cards will be dynamically inserted here -->
                 <div class="text-center py-12 text-gray-500 col-span-3">
                     <i class="fas fa-microchip text-4xl mb-4"></i>
                     <p>ยังไม่มีโหนดที่เชื่อมต่อ</p>
@@ -280,631 +210,240 @@
 
     <!-- JavaScript -->
     <script>
-        // ============ GLOBAL VARIABLES ============
+        // Simple frontend to work with the existing backend endpoints and socket.io
         let socket = null;
         let isConnected = false;
-        let nodeData = äå;
+        let nodeData = {};
         let currentNodeForTypeSetting = null;
 
-        // ============ INITIALIZATION ============
-        document.addEventListener('DOMContentLoaded', function() ä
+        document.addEventListener('DOMContentLoaded', function() {
             initSocket();
             initEventListeners();
             loadInitialData();
-            
-            // อัปเดทเวลาเซิร์ฟเวอร์ทุกวินาที
             setInterval(updateServerTime, 1000);
-        å);
+        });
 
-        // ============ SOCKET.IO ============
-        function initSocket() ä
-            socket = io();
-            
-            socket.on('connect', () => ä
-                console.log('✅ Connected to Hub server');
-                isConnected = true;
-                updateConnectionStatus(true);
-                showToast('เชื่อมต่อกับ Smart Farm Hub สำเร็จ', 'success');
-            å);
-            
-            socket.on('disconnect', () => ä
-                console.log('❌ Disconnected from Hub');
-                isConnected = false;
-                updateConnectionStatus(false);
-                showToast('การเชื่อมต่อกับ Hub ขาดหาย', 'warning');
-            å);
-            
-            socket.on('connected', (data) => ä
-                console.log('Hub:', data.message);
-            å);
-            
-            socket.on('sensor_update', (data) => ä
-                console.log('📡 Sensor update:', data);
-                updateNodeData(data.node_id, data);
+        function initSocket() {
+            try {
+                socket = io();
+
+                socket.on('connect', () => {
+                    console.log('Connected to Hub');
+                    isConnected = true;
+                    updateConnectionStatus(true);
+                    showToast('เชื่อมต่อกับ Smart Farm Hub สำเร็จ', 'success');
+                });
+
+                socket.on('disconnect', () => {
+                    console.log('Disconnected from Hub');
+                    isConnected = false;
+                    updateConnectionStatus(false);
+                    showToast('การเชื่อมต่อกับ Hub ขาดหาย', 'warning');
+                });
+
+                socket.on('sensor_update', (data) => {
+                    updateNodeData(data.node_id, data);
+                    document.getElementById('last-update').textContent = new Date().toLocaleTimeString('th-TH');
+                });
+
+                socket.on('dashboard_stats', (data) => updateDashboardStats(data));
+                socket.on('command_update', (data) => {
+                    updateDeviceStatus(data.node_id, data.action, data.value);
+                    if (data.source === 'web') showToast(`${getActionName(data.action)} ถูกตั้งค่าเป็น ${getValueDisplay(data.action, data.value)}`);
+                });
+
+            } catch (e) {
+                console.error('Socket init error', e);
+            }
+        }
+
+        function loadInitialData() {
+            fetch('/api/dashboard/stats').then(r => r.json()).then(updateDashboardStats).catch(console.error);
+            fetch('/api/nodes').then(r => r.json()).then(data => {
+                nodeData = data.nodes || {};
                 updateNodeList();
-                
-                // อัปเดทเวลาล่าสุด
-                const now = new Date().toLocaleTimeString('th-TH');
-                document.getElementById('last-update').textContent = now;
-            å);
-            
-            socket.on('dashboard_stats', (data) => ä
-                console.log('📊 Dashboard stats:', data);
-                updateDashboardStats(data);
-            å);
-            
-            socket.on('command_update', (data) => ä
-                console.log('🎮 Command update:', data);
-                updateDeviceStatus(data.node_id, data.action, data.value);
-                
-                if (data.source === 'web') ä
-                    showToast(é$ägetActionName(data.action)å ถูกตั้งค่าเป็น $ägetValueDisplay(data.action, data.value)åé);
-                å
-            å);
-            
-            socket.on('node_type_updated', (data) => ä
-                console.log('🔄 Node type updated:', data);
-                if (nodeDataÄdata.node_idÅ) ä
-                    nodeDataÄdata.node_idÅ.node_type = data.node_type;
-                    updateNodeList();
-                    
-                    // ถ้ากำลังแสดง control panel ของโหนดนี้ ให้รีเฟรช
-                    const selectedNode = document.getElementById('node-select').value;
-                    if (selectedNode === data.node_id) ä
-                        showControlPanel(data.node_id);
-                    å
-                å
-                showToast(éตั้งค่าประเภท $ädata.node_idå เป็น $ädata.node_type.toUpperCase()å แล้วé, 'success');
-            å);
-            
-            socket.on('new_notification', (notification) => ä
-                console.log('🔔 New notification:', notification);
-                // เพิ่มการแจ้งเตือน (ถ้ามีระบบแจ้งเตือน)
-            å);
-            
-            socket.on('error', (data) => ä
-                console.error('Socket error:', data);
-                showToast(éข้อผิดพลาด: $ädata.messageåé, 'error');
-            å);
-        å
+                updateNodeSelect();
+            }).catch(console.error);
+        }
 
-        // ============ DASHBOARD FUNCTIONS ============
-        function updateDashboardStats(stats) ä
-            document.getElementById('node-count').textContent = stats.node_count;
-            document.getElementById('avg-temp').textContent = stats.avg_temp + '°C';
-            document.getElementById('avg-humi').textContent = stats.avg_humi + '%';
-            document.getElementById('avg-soil').textContent = stats.avg_soil + '%';
-            document.getElementById('esp8266-count').textContent = stats.esp8266_count;
-            document.getElementById('esp32-count').textContent = stats.esp32_count;
-        å
-        
-        function updateServerTime() ä
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('th-TH', ä
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            å);
-            document.getElementById('server-time').textContent = timeString;
-        å
+        function updateDashboardStats(stats) {
+            document.getElementById('node-count').textContent = stats.node_count || 0;
+            document.getElementById('avg-temp').textContent = (stats.avg_temp || 0) + '°C';
+            document.getElementById('avg-humi').textContent = (stats.avg_humi || 0) + '%';
+            document.getElementById('avg-soil').textContent = (stats.avg_soil || 0) + '%';
+            document.getElementById('esp8266-count').textContent = stats.esp8266_count || 0;
+            document.getElementById('esp32-count').textContent = stats.esp32_count || 0;
+        }
 
-        // ============ DATA MANAGEMENT ============
-        function loadInitialData() ä
-            // โหลดข้อมูลสถิติ
-            fetch('/api/dashboard/stats')
-                .then(response => response.json())
-                .then(data => ä
-                    updateDashboardStats(data);
-                å)
-                .catch(error => console.error('Error loading dashboard stats:', error));
-            
-            // โหลดข้อมูลโหนด
-            fetch('/api/nodes')
-                .then(response => response.json())
-                .then(data => ä
-                    nodeData = data.nodes öö äå;
-                    updateNodeList();
-                    updateNodeSelect();
-                å)
-                .catch(error => console.error('Error loading nodes:', error));
-        å
-        
-        function updateNodeData(nodeId, data) ä
-            if (!nodeDataÄnodeIdÅ) ä
-                nodeDataÄnodeIdÅ = ä
-                    ...data.data,
-                    node_type: data.node_type öö 'unknown',
-                    commands: äå,
-                    last_update: data.timestamp
-                å;
-            å else ä
-                nodeDataÄnodeIdÅ = ä
-                    ...nodeDataÄnodeIdÅ,
-                    ...data.data,
-                    node_type: data.node_type öö nodeDataÄnodeIdÅ.node_type öö 'unknown',
-                    last_update: data.timestamp
-                å;
-            å
-            
+        function updateNodeData(nodeId, data) {
+            nodeData[nodeId] = Object.assign({}, nodeData[nodeId] || {}, data.data || {}, { node_type: data.node_type || nodeData[nodeId]?.node_type || 'unknown', commands: nodeData[nodeId]?.commands || {} , last_update: data.timestamp });
             updateNodeList();
             updateNodeSelect();
-        å
-        
-        function updateDeviceStatus(nodeId, action, value) ä
-            if (nodeDataÄnodeIdÅ) ä
-                if (!nodeDataÄnodeIdÅ.commands) nodeDataÄnodeIdÅ.commands = äå;
-                nodeDataÄnodeIdÅ.commandsÄactionÅ = value;
-                updateNodeList();
-                
-                // ถ้ากำลังแสดง control panel ของโหนดนี้อยู่ ให้อัปเดทด้วย
-                const selectedNode = document.getElementById('node-select').value;
-                if (selectedNode === nodeId) ä
-                    showControlPanel(nodeId);
-                å
-            å
-        å
-        
-        function refreshNodes() ä
-            loadInitialData();
-            showToast('รีเฟรชข้อมูลโหนดเรียบร้อย', 'success');
-        å
+        }
 
-        // ============ UI UPDATES ============
-        function updateNodeList() ä
+        function updateDeviceStatus(nodeId, action, value) {
+            if (!nodeData[nodeId]) return;
+            nodeData[nodeId].commands = nodeData[nodeId].commands || {};
+            nodeData[nodeId].commands[action] = value;
+            updateNodeList();
+        }
+
+        function refreshNodes() { loadInitialData(); showToast('รีเฟรชข้อมูลโหนดเรียบร้อย', 'success'); }
+
+        function updateNodeList() {
             const container = document.getElementById('nodes-container');
-            const nodes = Object.entries(nodeData);
-            
-            if (nodes.length === 0) ä
-                container.innerHTML = é
-                    <div class="text-center py-12 text-gray-500 col-span-3">
-                        <i class="fas fa-microchip text-4xl mb-4"></i>
-                        <p>ยังไม่มีโหนดที่เชื่อมต่อ</p>
-                        <p class="text-sm mt-2">ส่งข้อมูลจาก ESP8266/ESP32 ผ่าน API เพื่อเริ่มใช้งาน</p>
-                    </div>
-                é;
-                return;
-            å
-            
-            container.innerHTML = nodes.map((ÄnodeId, dataÅ) => ä
-                const nodeType = data.node_type öö 'unknown';
-                const commands = data.commands öö äå;
-                const typeChip = nodeType === 'esp8266' ? 'chip-esp8266' : 
-                                nodeType === 'esp32' ? 'chip-esp32' : 'chip-unknown';
-                const typeText = nodeType === 'esp8266' ? 'ESP8266' : 
-                                nodeType === 'esp32' ? 'ESP32' : 'Unknown';
-                
-                return é
-                <div class="card p-4">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h4 class="font-bold text-lg">$änodeIdå</h4>
-                            <p class="text-sm text-gray-600">
-                                <i class="fas fa-clock mr-1"></i>
-                                $ädata.last_update ? formatTime(data.last_update) : 'ไม่ทราบเวลา'å
-                            </p>
+            const entries = Object.entries(nodeData);
+            if (entries.length === 0) return;
+            container.innerHTML = entries.map(([id, data]) => {
+                const nodeType = data.node_type || 'unknown';
+                return `
+                    <div class="card p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="font-bold text-lg">${id}</h4>
+                                <p class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> ${data.last_update ? new Date(data.last_update).toLocaleTimeString('th-TH') : 'ไม่ทราบเวลา'}</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 rounded-full ${nodeType === 'esp8266' ? 'chip-esp8266' : nodeType === 'esp32' ? 'chip-esp32' : 'chip-unknown'}">${nodeType.toUpperCase()}</span>
                         </div>
-                        <span class="text-xs px-2 py-1 rounded-full $ätypeChipå">$ätypeTextå</span>
+
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <div class="text-center p-2 bg-red-50 rounded">
+                                <p class="text-xs text-gray-600">อุณหภูมิ</p>
+                                <p class="font-bold text-red-600">${(data.temp || 0).toFixed ? (data.temp || 0).toFixed(1) + '°C' : (data.temp || 0) + '°C'}</p>
+                            </div>
+                            <div class="text-center p-2 bg-blue-50 rounded">
+                                <p class="text-xs text-gray-600">ความชื้นอากาศ</p>
+                                <p class="font-bold text-blue-600">${(data.humi || 0).toFixed ? (data.humi || 0).toFixed(1) + '%' : (data.humi || 0) + '%'}</p>
+                            </div>
+                            <div class="text-center p-2 bg-green-50 rounded">
+                                <p class="text-xs text-gray-600">ความชื้นดิน</p>
+                                <p class="font-bold text-green-600">${data.soil || 0}%</p>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <button onclick="showControlPanelForNode('${id}')" class="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm"><i class="fas fa-sliders-h mr-2"></i>ควบคุม</button>
+                        </div>
                     </div>
-                    
-                    <div class="grid grid-cols-3 gap-2 mb-3">
+                `;
+            }).join('');
+        }
+
+        function updateNodeSelect() {
+            const select = document.getElementById('node-select');
+            select.innerHTML = '<option value="">เลือกโหนด...</option>' + Object.keys(nodeData).map(k => `<option value="${k}">${k} (${(nodeData[k].node_type||'unknown').toUpperCase()})</option>`).join('');
+            select.onchange = function() { showControlPanel(this.value); };
+        }
+
+        function showControlPanelForNode(nodeId) { setActiveTab('control'); document.getElementById('node-select').value = nodeId; showControlPanel(nodeId); }
+
+        function showControlPanel(nodeId) {
+            const panel = document.getElementById('control-panel');
+            if (!nodeId || !nodeData[nodeId]) { panel.innerHTML = '<p class="text-gray-600 text-center py-8">เลือกโหนดเพื่อควบคุมอุปกรณ์</p>'; return; }
+            const node = nodeData[nodeId];
+            const nodeType = node.node_type || 'unknown';
+            const commands = node.commands || {};
+
+            panel.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold mb-2">ควบคุม ${nodeId} <span class="${nodeType === 'esp8266' ? 'chip-esp8266' : nodeType === 'esp32' ? 'chip-esp32' : 'chip-unknown'} text-xs px-2 py-1 rounded-full">${nodeType.toUpperCase()}</span></h3>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
                         <div class="text-center p-2 bg-red-50 rounded">
                             <p class="text-xs text-gray-600">อุณหภูมิ</p>
-                            <p class="font-bold text-red-600">$ä(data.temp öö 0).toFixed(1)å°C</p>
+                            <p class="font-bold text-red-600">${(node.temp||0)}°C</p>
                         </div>
                         <div class="text-center p-2 bg-blue-50 rounded">
                             <p class="text-xs text-gray-600">ความชื้นอากาศ</p>
-                            <p class="font-bold text-blue-600">$ä(data.humi öö 0).toFixed(1)å%</p>
+                            <p class="font-bold text-blue-600">${(node.humi||0)}%</p>
                         </div>
                         <div class="text-center p-2 bg-green-50 rounded">
                             <p class="text-xs text-gray-600">ความชื้นดิน</p>
-                            <p class="font-bold text-green-600">$ä(data.soil öö 0)å%</p>
+                            <p class="font-bold text-green-600">${node.soil||0}%</p>
                         </div>
-                    </div>
-                    
-                    <div class="flex space-x-2">
-                        <button onclick="showControlPanelForNode('$änodeIdå')" 
-                                class="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm">
-                            <i class="fas fa-sliders-h mr-2"></i>ควบคุม
-                        </button>
-                        $änodeType === 'unknown' ? é
-                            <button onclick="openNodeTypeModal('$änodeIdå')" 
-                                    class="flex-1 bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 text-sm">
-                                <i class="fas fa-cog mr-2"></i>ตั้งค่า
-                            </button>
-                        é : ''å
                     </div>
                 </div>
-                é;
-            å).join('');
-        å
-        
-        function updateNodeSelect() ä
-            const select = document.getElementById('node-select');
-            const nodes = Object.keys(nodeData);
-            
-            select.innerHTML = '<option value="">เลือกโหนด...</option>' + 
-                nodes.map(node => é<option value="$änodeå">$änodeå ($änodeDataÄnodeÅ.node_type öö 'unknown'å)</option>é).join('');
-            
-            select.onchange = function() ä
-                showControlPanel(this.value);
-            å;
-        å
-        
-        function showControlPanelForNode(nodeId) ä
-            setActiveTab('control');
-            document.getElementById('node-select').value = nodeId;
-            showControlPanel(nodeId);
-        å
-        
-        function showControlPanel(nodeId) ä
-            const panel = document.getElementById('control-panel');
-            if (!nodeId öö !nodeDataÄnodeIdÅ) ä
-                panel.innerHTML = '<p class="text-gray-600 text-center py-8">เลือกโหนดเพื่อควบคุมอุปกรณ์</p>';
-                return;
-            å
-            
-            const node = nodeDataÄnodeIdÅ;
-            const nodeType = node.node_type öö 'unknown';
-            const commands = node.commands öö äå;
-            
-            let controlsHTML = '';
-            
-            if (nodeType === 'esp8266') ä
-                controlsHTML = é
-                    <div class="mb-6">
-                        <h3 class="text-lg font-bold mb-2">ควบคุม $änodeIdå <span class="chip-esp8266 text-xs px-2 py-1 rounded-full">ESP8266</span></h3>
-                        <div class="grid grid-cols-3 gap-3 mb-4">
-                            <div class="text-center p-2 bg-red-50 rounded">
-                                <p class="text-xs text-gray-600">อุณหภูมิ</p>
-                                <p class="font-bold text-red-600">$ä(node.temp öö 0).toFixed(1)å°C</p>
-                            </div>
-                            <div class="text-center p-2 bg-blue-50 rounded">
-                                <p class="text-xs text-gray-600">ความชื้นอากาศ</p>
-                                <p class="font-bold text-blue-600">$ä(node.humi öö 0).toFixed(1)å%</p>
-                            </div>
-                            <div class="text-center p-2 bg-green-50 rounded">
-                                <p class="text-xs text-gray-600">ความชื้นดิน</p>
-                                <p class="font-bold text-green-600">$ä(node.soil öö 0)å%</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <!-- Pump Control -->
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="font-medium">ปั๊มน้ำ</span>
-                                <div class="flex space-x-2">
-                                    <button onclick="sendCommand('$änodeIdå', 'pump', $äcommands.pump ? 0 : 1å)" 
-                                            class="$äcommands.pump ? 'btn-pump-on' : 'btn-pump-off'å px-4 py-2 rounded">
-                                        <i class="fas $äcommands.pump ? 'fa-stop' : 'fa-play'å mr-2"></i>$äcommands.pump ? 'ปิด' : 'เปิด'å
-                                    </button>
-                                </div>
-                            </div>
-                            <p class="text-xs text-gray-600">สถานะปัจจุบัน: <span class="font-bold $äcommands.pump ? 'text-green-600' : 'text-red-600'å">$äcommands.pump ? 'เปิด' : 'ปิด'å</span></p>
-                        </div>
-                        
-                        <!-- Servo Control -->
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="font-medium">เซอร์โววาล์ว</span>
-                                <span class="text-green-600 font-bold" id="servo-value-display">$äcommands.servo öö 0å°</span>
-                            </div>
-                            <input type="range" min="0" max="180" value="$äcommands.servo öö 0å" 
-                                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                   oninput="document.getElementById('servo-value-display').textContent = this.value + '°'"
-                                   onchange="sendCommand('$änodeIdå', 'servo', this.value)">
-                            <div class="flex justify-between text-sm text-gray-600 mt-1">
-                                <span>0°</span>
-                                <span>90°</span>
-                                <span>180°</span>
-                            </div>
-                        </div>
-                        
-                        <!-- LED Control -->
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="font-medium">ไฟ LED</span>
-                                <div class="flex space-x-2">
-                                    <button onclick="sendCommand('$änodeIdå', 'led', $äcommands.led ? 0 : 1å)" 
-                                            class="$äcommands.led ? 'btn-led-on' : 'btn-led-off'å px-4 py-2 rounded">
-                                        <i class="fas fa-lightbulb mr-2"></i>$äcommands.led ? 'ปิด' : 'เปิด'å
-                                    </button>
-                                </div>
-                            </div>
-                            <p class="text-xs text-gray-600">สถานะปัจจุบัน: <span class="font-bold $äcommands.led ? 'text-yellow-600' : 'text-gray-600'å">$äcommands.led ? 'เปิด' : 'ปิด'å</span></p>
-                        </div>
-                    </div>
-                é;
-            å else if (nodeType === 'esp32') ä
-                // ESP32 มี 6 pin ให้ควบคุม
-                const pinControls = Ä
-                    äpin: 'd1', name: 'D1 (ปั๊มน้ำ)', class: 'pump'å,
-                    äpin: 'd2', name: 'D2 (ไฟ LED)', class: 'led'å,
-                    äpin: 'd5', name: 'D5 (พัดลม)', class: 'fan'å,
-                    äpin: 'd0', name: 'D0 (เซอร์โว)', class: 'servo'å,
-                    äpin: 'd7', name: 'D7 (สเปรย์น้ำ)', class: 'mist'å,
-                    äpin: 'd8', name: 'D8 (ไฟส่องสว่าง)', class: 'lamp'å
-                Å;
-                
-                controlsHTML = é
-                    <div class="mb-6">
-                        <h3 class="text-lg font-bold mb-2">ควบคุม $änodeIdå <span class="chip-esp32 text-xs px-2 py-1 rounded-full">ESP32</span></h3>
-                        <div class="grid grid-cols-3 gap-3 mb-4">
-                            <div class="text-center p-2 bg-red-50 rounded">
-                                <p class="text-xs text-gray-600">อุณหภูมิ</p>
-                                <p class="font-bold text-red-600">$ä(node.temp öö 0).toFixed(1)å°C</p>
-                            </div>
-                            <div class="text-center p-2 bg-blue-50 rounded">
-                                <p class="text-xs text-gray-600">ความชื้นอากาศ</p>
-                                <p class="font-bold text-blue-600">$ä(node.humi öö 0).toFixed(1)å%</p>
-                            </div>
-                            <div class="text-center p-2 bg-green-50 rounded">
-                                <p class="text-xs text-gray-600">ความชื้นดิน</p>
-                                <p class="font-bold text-green-600">$ä(node.soil öö 0)å%</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        $äpinControls.map(pin => ä
-                            const value = commandsÄpin.pinÅ öö 0;
-                            const isOn = value > 0;
-                            const btnClass = isOn ? ébtn-$äpin.classå-oné : ébtn-$äpin.classå-offé;
-                            const action = pin.pin;
-                            
-                            if (pin.pin === 'd0') ä
-                                // Servo control
-                                return é
-                                    <div class="border border-gray-200 rounded-lg p-4">
-                                        <div class="flex justify-between items-center mb-2">
-                                            <span class="font-medium">$äpin.nameå</span>
-                                            <span class="text-green-600 font-bold">$ävalueå°</span>
-                                        </div>
-                                        <input type="range" min="0" max="180" value="$ävalueå" 
-                                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                               oninput="this.nextElementSibling.textContent = this.value + '°'"
-                                               onchange="sendCommand('$änodeIdå', '$äactionå', this.value)">
-                                        <div class="flex justify-between text-sm text-gray-600 mt-1">
-                                            <span>0°</span>
-                                            <span>90°</span>
-                                            <span>180°</span>
-                                        </div>
-                                    </div>
-                                é;
-                            å else ä
-                                // On/Off control
-                                return é
-                                    <div class="border border-gray-200 rounded-lg p-4">
-                                        <div class="flex justify-between items-center mb-2">
-                                            <span class="font-medium">$äpin.nameå</span>
-                                            <button onclick="sendCommand('$änodeIdå', '$äactionå', $äisOn ? 0 : 1å)" 
-                                                    class="$äbtnClasså px-3 py-1 rounded text-sm">
-                                                <i class="fas $äisOn ? 'fa-stop' : 'fa-play'å mr-1"></i>$äisOn ? 'ปิด' : 'เปิด'å
-                                            </button>
-                                        </div>
-                                        <p class="text-xs text-gray-600">สถานะ: <span class="font-bold $äisOn ? 'text-green-600' : 'text-red-600'å">$äisOn ? 'เปิด' : 'ปิด'å</span></p>
-                                    </div>
-                                é;
-                            å
-                        å).join('')å
-                    </div>
-                é;
-            å else ä
-                // Unknown node type
-                controlsHTML = é
-                    <div class="text-center py-8">
-                        <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-700 mb-2">ไม่ทราบประเภทโหนด</h3>
-                        <p class="text-gray-600 mb-4">โปรดตั้งค่าประเภทโหนดก่อนควบคุมอุปกรณ์</p>
-                        <button onclick="openNodeTypeModal('$änodeIdå')" 
-                                class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
-                            <i class="fas fa-cog mr-2"></i>ตั้งค่าประเภทโหนด
-                        </button>
-                    </div>
-                é;
-            å
-            
-            panel.innerHTML = controlsHTML;
-        å
 
-        // ============ NODE TYPE SETTING FUNCTIONS ============
-        function openNodeTypeModal(nodeId) ä
-            currentNodeForTypeSetting = nodeId;
-            document.getElementById('modal-node-id').textContent = nodeId;
-            document.getElementById('node-type-modal').classList.remove('hidden');
-        å
-        
-        function closeNodeTypeModal() ä
-            document.getElementById('node-type-modal').classList.add('hidden');
-            currentNodeForTypeSetting = null;
-        å
-        
-        function saveNodeType() ä
-            if (!currentNodeForTypeSetting) return;
-            
-            const nodeType = document.getElementById('node-type-select').value;
-            
-            fetch(é/api/node/$äcurrentNodeForTypeSettingå/set_typeé, ä
-                method: 'POST',
-                headers: ä
-                    'Content-Type': 'application/json',
-                å,
-                body: JSON.stringify(ä node_type: nodeType å)
-            å)
-            .then(response => response.json())
-            .then(data => ä
-                if (data.status === 'success') ä
-                    closeNodeTypeModal();
-                    // อัปเดทข้อมูลโหนดใน local
-                    if (nodeDataÄcurrentNodeForTypeSettingÅ) ä
-                        nodeDataÄcurrentNodeForTypeSettingÅ.node_type = nodeType;
-                    å
-                    updateNodeList();
-                    updateNodeSelect();
-                    showToast(éตั้งค่าประเภทโหนดเป็น $änodeType.toUpperCase()å สำเร็จé, 'success');
-                å else ä
-                    showToast(éตั้งค่าประเภทโหนดล้มเหลว: $ädata.erroråé, 'error');
-                å
-            å)
-            .catch(error => ä
-                console.error('Error setting node type:', error);
-                showToast('เกิดข้อผิดพลาดในการตั้งค่าประเภทโหนด', 'error');
-            å);
-        å
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">ปั๊มน้ำ</span>
+                            <div class="flex space-x-2">
+                                <button onclick="sendCommand('${nodeId}', 'pump', ${commands.pump ? 0 : 1})" class="px-4 py-2 rounded ${commands.pump ? 'btn-pump-on' : 'btn-pump-off'}">${commands.pump ? '<i class="fas fa-stop mr-2"></i>ปิด' : '<i class="fas fa-play mr-2"></i>เปิด'}</button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600">สถานะปัจจุบัน: <span class="font-bold ${commands.pump ? 'text-green-600' : 'text-red-600'}">${commands.pump ? 'เปิด' : 'ปิด'}</span></p>
+                    </div>
 
-        // ============ CONTROL FUNCTIONS ============
-        function sendCommand(nodeId, action, value) ä
-            if (!isConnected) ä
-                showToast('ยังไม่ได้เชื่อมต่อกับ Hub', 'error');
-                return;
-            å
-            
-            const nodeType = nodeDataÄnodeIdÅ?.node_type;
-            if (nodeType === 'unknown') ä
-                showToast('โปรดตั้งค่าประเภทโหนดก่อนควบคุมอุปกรณ์', 'warning');
-                openNodeTypeModal(nodeId);
-                return;
-            å
-            
-            socket.emit('control_device', ä
-                node_id: nodeId,
-                action: action,
-                value: parseInt(value)
-            å);
-            
-            showToast(éส่งคำสั่ง $ägetActionName(action)å เป็น $ägetValueDisplay(action, value)åé, 'success');
-        å
-        
-        function getActionName(action) ä
-            const names = ä
-                'pump': 'ปั๊มน้ำ', 'led': 'ไฟ LED', 'servo': 'เซอร์โววาล์ว',
-                'd1': 'ปั๊มน้ำ (D1)', 'd2': 'ไฟ LED (D2)', 'd5': 'พัดลม (D5)',
-                'd0': 'เซอร์โว (D0)', 'd7': 'สเปรย์น้ำ (D7)', 'd8': 'ไฟส่องสว่าง (D8)'
-            å;
-            return namesÄactionÅ öö action;
-        å
-        
-        function getValueDisplay(action, value) ä
-            if (action.includes('servo') öö action === 'd0') return value + '°';
-            return value ? 'เปิด' : 'ปิด';
-        å
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">ไฟ LED</span>
+                            <div class="flex space-x-2">
+                                <button onclick="sendCommand('${nodeId}', 'led', ${commands.led ? 0 : 1})" class="px-4 py-2 rounded ${commands.led ? 'btn-led-on' : 'btn-led-off'}">${commands.led ? 'ปิด' : 'เปิด'}</button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600">สถานะปัจจุบัน: <span class="font-bold ${commands.led ? 'text-yellow-600' : 'text-gray-600'}">${commands.led ? 'เปิด' : 'ปิด'}</span></p>
+                    </div>
+                </div>
+            `;
+        }
 
-        // ============ UI HELPER FUNCTIONS ============
-        function updateConnectionStatus(connected) ä
+        function sendCommand(nodeId, action, value) {
+            if (!isConnected) { showToast('ยังไม่ได้เชื่อมต่อกับ Hub', 'error'); return; }
+            const nodeType = nodeData[nodeId]?.node_type;
+            if (nodeType === 'unknown') { showToast('โปรดตั้งค่าประเภทโหนดก่อนควบคุมอุปกรณ์', 'warning'); return; }
+            socket.emit('control_device', { node_id: nodeId, action: action, value: parseInt(value) });
+            showToast(`ส่งคำสั่ง ${getActionName(action)} เป็น ${getValueDisplay(action, value)}`, 'success');
+        }
+
+        function getActionName(action) {
+            const names = { 'pump': 'ปั๊มน้ำ', 'led': 'ไฟ LED', 'servo': 'เซอร์โววาล์ว', 'd1':'ปั๊มน้ำ (D1)', 'd2':'ไฟ LED (D2)' };
+            return names[action] || action;
+        }
+
+        function getValueDisplay(action, value) { if (String(action).includes('servo') || action === 'd0') return value + '°'; return value ? 'เปิด' : 'ปิด'; }
+
+        function updateConnectionStatus(connected) {
             const statusElement = document.getElementById('connection-status');
             const statusText = document.getElementById('status-text');
             const statusDot = document.getElementById('status-dot');
-            
-            if (connected) ä
+
+            if (connected) {
                 statusText.textContent = 'เชื่อมต่อ Hub แล้ว';
                 statusDot.className = 'status-dot online';
-                statusElement.classList.remove('bg-red-500');
-                statusElement.classList.add('bg-green-600');
                 document.getElementById('server-status').textContent = 'Online';
                 document.getElementById('server-status').className = 'font-bold text-green-600';
-            å else ä
+            } else {
                 statusText.textContent = 'ตัดการเชื่อมต่อ';
                 statusDot.className = 'status-dot offline';
-                statusElement.classList.remove('bg-green-600');
-                statusElement.classList.add('bg-red-500');
                 document.getElementById('server-status').textContent = 'Offline';
                 document.getElementById('server-status').className = 'font-bold text-red-600';
-            å
-        å
-        
-        function setActiveTab(tabName) ä
-            // Update tab buttons
-            document.querySelectorAll('.tab-button').forEach(btn => ä
-                if (btn.dataset.tab === tabName) ä
-                    btn.classList.add('active');
-                å else ä
-                    btn.classList.remove('active');
-                å
-            å);
-            
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(content => ä
-                if (content.id === tabName) ä
-                    content.classList.remove('hidden');
-                å else ä
-                    content.classList.add('hidden');
-                å
-            å);
-        å
-        
-        function showToast(message, type = 'success') ä
-            // Create a simple toast
+            }
+        }
+
+        function updateServerTime() { const now = new Date(); document.getElementById('server-time').textContent = now.toLocaleTimeString('th-TH'); }
+
+        function showToast(message, type = 'success') {
             const toast = document.createElement('div');
-            toast.className = éfixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg z-50 $ä
-                type === 'success' ? 'bg-green-500 text-white' : 
-                type === 'error' ? 'bg-red-500 text-white' : 
-                'bg-yellow-500 text-white'
-            åé;
+            toast.className = `fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-500 text-white' : type === 'error' ? 'bg-red-500 text-white' : 'bg-yellow-500 text-white'}`;
             toast.textContent = message;
-            
             document.body.appendChild(toast);
-            
-            setTimeout(() => ä
-                toast.remove();
-            å, 3000);
-        å
-        
-        function formatTime(isoString) ä
-            try ä
-                const date = new Date(isoString);
-                const now = new Date();
-                const diffMs = now - date;
-                const diffMins = Math.floor(diffMs / 60000);
-                
-                if (diffMins < 1) return 'เมื่อสักครู่';
-                if (diffMins < 60) return é$ädiffMinså นาทีที่แล้วé;
-                
-                return date.toLocaleTimeString('th-TH', ä
-                    hour: '2-digit',
-                    minute: '2-digit'
-                å);
-            å catch (e) ä
-                return 'ไม่ทราบเวลา';
-            å
-        å
+            setTimeout(() => toast.remove(), 3000);
+        }
 
-        // ============ EVENT LISTENERS ============
-        function initEventListeners() ä
-            // Tab navigation
-            document.querySelectorAll('.tab-button').forEach(btn => ä
-                btn.addEventListener('click', () => ä
-                    setActiveTab(btn.dataset.tab);
-                å);
-            å);
-            
-            // Close modal when clicking outside
-            document.getElementById('node-type-modal').addEventListener('click', function(e) ä
-                if (e.target === this) ä
-                    closeNodeTypeModal();
-                å
-            å);
-            
-            // Close modal with Escape key
-            document.addEventListener('keydown', function(e) ä
-                if (e.key === 'Escape') ä
-                    closeNodeTypeModal();
-                å
-            å);
-        å
+        function setActiveTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => { if (btn.dataset.tab === tabName) btn.classList.add('active'); else btn.classList.remove('active'); });
+            document.querySelectorAll('.tab-content').forEach(content => { if (content.id === tabName) content.classList.remove('hidden'); else content.classList.add('hidden'); });
+        }
 
-        // ============ GLOBAL EXPORTS ============
+        function initEventListeners() {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
+        }
+
         window.sendCommand = sendCommand;
         window.refreshNodes = refreshNodes;
         window.setActiveTab = setActiveTab;
         window.showControlPanel = showControlPanel;
         window.showControlPanelForNode = showControlPanelForNode;
-        window.openNodeTypeModal = openNodeTypeModal;
-        window.closeNodeTypeModal = closeNodeTypeModal;
-        window.saveNodeType = saveNodeType;
     </script>
 </body>
 </html>
-
